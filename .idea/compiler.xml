@@ -9,5 +9,8 @@
         <module name="sherlock" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="sherlock" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

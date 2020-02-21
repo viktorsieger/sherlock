@@ -1,14 +1,28 @@
 package se.umu.cs;
 
 public class Sherlock {
+
     public static void main(String[] args) {
 
-	if(args.length != 1) {
-	    throw new IllegalArgumentException();
-	}
+        String[] parts;
+        String owner;
+        String repo;
 
-	System.out.println("TESTTT");
+        if(args.length != 1) {
+            throw new IllegalArgumentException();
+        }
 
-	return;
+        parts = args[0].split("/");
+        owner = parts[0];
+        repo = parts[1];
+
+        try {
+            new APIManager();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
+
 }
