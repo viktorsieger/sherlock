@@ -1,43 +1,184 @@
 package se.umu.cs;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
+import com.google.gson.JsonObject;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import java.io.InputStream;
+import java.util.Scanner;
 
 public class APIManager {
 
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(30))
-            .followRedirects(HttpClient.Redirect.NEVER)
-            .version(HttpClient.Version.HTTP_2)
-            .build();
+    private static final String gitHubAPIEndpoint = "https://api.github.com/graphql";
+    private static final String queryRepositoryFoundation = "query {" +
+                                                            "    repository(name: \"%s\", owner: \"%s\") {" +
+                                                            "        createdAt" +
+                                                            "        hasIssuesEnabled" +
+                                                            "        id" +
+                                                            "        isArchived" +
+                                                            "        isDisabled" +
+                                                            "        isLocked" +
+                                                            "        isMirror" +
+                                                            "        isTemplate" +
+                                                            "        licenseInfo {" +
+                                                            "            body" +
+                                                            "            name" +
+                                                            "            pseudoLicense" +
+                                                            "        }" +
+                                                            "        name" +
+                                                            "        owner {" +
+                                                            "            ... on User {" +
+                                                            "                id" +
+                                                            "                login" +
+                                                            "            }" +
+                                                            "        }" +
+                                                            "        pushedAt" +
+                                                            "        updatedAt" +
+                                                            "    }" +
+                                                            "}";
 
-    public APIManager() throws Exception {
-        sendPost();
+    private static final String queryRepositoryIssuesMetaData = "query {" +
+                                                                "    repository(name: \"%s\", owner: \"%s\") {" +
+                                                                "        issues {" +
+                                                                "            totalCount" +
+                                                                "        }" +
+                                                                "        hasIssuesEnabled" +
+                                                                "    }" +
+                                                                "}";
+
+    private static final String queryRepositoryIssues = "query {" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "" +
+                                                        "}";
+
+
+    private String gitHubOAuthToken = "";
+
+    private CloseableHttpClient httpClient;
+
+    public APIManager() {
+        httpClient = HttpClients.createDefault();
     }
 
-    private void sendPost() throws Exception {
+    public Repository fetchRepository(String name, String owner) throws Exception {
 
-        String body0 = "{" +
-                "\"query\": \"query { viewer { login }}\"" +
-                "}";
+        Repository repository;
+        String jsonRepositoryFoundation;
+        String jsonRepositoryIssues;
 
-        String body = "{" +
-                "\"query\": \"query { repository(owner:\"octocat\", name:\"Hello-World\") { id }}\"" +
-                "}";
+        // Fetches foundation of repository
+        jsonRepositoryFoundation = fetchRepositoryFoundation(name, owner);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.github.com/graphql"))
-                .header("Authorization", "bearer KEYHERE")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
-                .build();
+        System.out.println(jsonRepositoryFoundation);
 
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // Fetches issues of repository
+        jsonRepositoryIssues = fetchRepositoryIssues(name, owner);
 
-        System.out.println(response.body());
+        // Fetches labels of repository
 
+        // Parse JSON-strings to Repository object
+
+        return new Repository();
+    }
+
+    private String fetchRepositoryFoundation(String name, String owner) throws Exception {
+
+        CloseableHttpResponse response;
+        HttpPost request;
+        String jsonRepositoryFoundation;
+
+        request = prepareGitHubRequest(gitHubOAuthToken, String.format(queryRepositoryFoundation, name, owner));
+        response = sendPost(request);
+        jsonRepositoryFoundation = inputStreamToString(response.getEntity().getContent());
+        response.close();
+
+        return jsonRepositoryFoundation;
+    }
+
+    private String fetchRepositoryIssues(String name, String owner) throws Exception {
+
+        CloseableHttpResponse response;
+        HttpPost requestIssuesMetaData;
+        String jsonRepositoryIssues;
+        int totalCount;
+        boolean hasIssuesEnabled;
+
+        requestIssuesMetaData = prepareGitHubRequest(gitHubOAuthToken, String.format(queryRepositoryIssuesMetaData, name, owner));
+        response = sendPost(requestIssuesMetaData);
+        jsonRepositoryIssues = inputStreamToString(response.getEntity().getContent());
+        response.close();
+
+        hasIssuesEnabled = JSONParser.parserIssuesHasIssuesEnabled(jsonRepositoryIssues);
+
+        if(hasIssuesEnabled) {
+            totalCount = JSONParser.parserIssuesTotalCount(jsonRepositoryIssues);
+
+            int i = 0;
+
+            while(i < totalCount) {
+
+
+
+                i += 100;
+            }
+        }
+
+        return "";
+    }
+
+    private HttpPost prepareGitHubRequest(String gitHubOAuthToken, String query) throws Exception {
+
+        HttpPost request;
+        JsonObject jsonObject;
+        StringEntity params;
+
+        jsonObject = new JsonObject();
+        jsonObject.addProperty("query", query);
+
+        params = new StringEntity(jsonObject.toString());
+
+        request = new HttpPost(gitHubAPIEndpoint);
+        request.addHeader("Content-Type", "application/json");
+        request.addHeader("Accept", "application/vnd.github.v4+json");
+        request.addHeader("Authorization", "bearer ".concat(gitHubOAuthToken));
+        request.setEntity(params);
+
+        return request;
+    }
+
+    private CloseableHttpResponse sendPost(HttpPost request) throws Exception {
+        return httpClient.execute(request);
+    }
+
+    private String inputStreamToString(InputStream inputStream) {
+
+        Scanner scanner;
+
+        scanner = new Scanner(inputStream).useDelimiter("\\A");
+
+        return scanner.hasNext() ? scanner.next() : "";
+    }
+
+    private String getGitHubAPIKey() {
+        return "";
     }
 
 }
