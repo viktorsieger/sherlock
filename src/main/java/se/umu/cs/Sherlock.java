@@ -1,18 +1,19 @@
 package se.umu.cs;
 
-import org.apache.commons.cli.*;
+import java.io.IOException;
 
 public class Sherlock {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
 
         String[] parts;
         String owner;
         String name;
         Repository repository;
 
-        examineArguments(args);
+        checkArguments(args);
 
+        /*
         Options options = new Options();
 
         Option output = new Option("o","output", true, "");
@@ -37,17 +38,22 @@ public class Sherlock {
         else {
             // Analyze everything
         }
+        */
 
         parts = args[0].split("/");
         owner = parts[0];
         name = parts[1];
 
-        APIManager apiManager = new APIManager();
-        repository = apiManager.fetchRepository(name, owner);
+        String temp;
+
+        APIManagerTwo apiManagerTwo = new APIManagerTwo();
+        temp = apiManagerTwo.fetchRepositoryFoundation(name, owner);
+
+        System.out.println(temp);
 
     }
 
-    private static void examineArguments(String[] args) throws IllegalArgumentException {
+    private static void checkArguments(String[] args) throws IllegalArgumentException {
         if(args.length != 1) {
             throw new IllegalArgumentException();
         }
@@ -57,3 +63,8 @@ public class Sherlock {
     }
 
 }
+
+// https://stackoverflow.com/questions/51475415/graphql-java-class-generator
+// https://stackoverflow.com/questions/1688099/converting-json-data-to-java-object
+// https://github.com/chentsulin/awesome-graphql#lib-java
+// https://graphql.org/code/#tools
