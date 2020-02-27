@@ -1,11 +1,23 @@
 package se.umu.cs;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import se.umu.cs.graphql.Repository;
 
 public class JSONParser {
 
-    public static void parser(Repository repository, String jsonRepositoryFoundation, String jsonRepositoryIssues) {
+    public static void parser(Repository repository, String json) {
+
+        Repository repo;
+        Gson gson = new Gson();
+
+        JsonObject data = JsonParser.parseString(json).getAsJsonObject().getAsJsonObject("data");
+        JsonObject repositoryObject = data.getAsJsonObject("repository");
+
+        System.out.println(repositoryObject.toString());
+
+        repo = gson.fromJson(repositoryObject.toString(), Repository.class);
 
     }
 

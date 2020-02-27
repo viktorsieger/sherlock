@@ -1,0 +1,9 @@
+package se.umu.cs.graphql;
+
+import java.util.*;
+
+public interface UpdateEnterpriseMembersCanChangeRepositoryVisibilitySettingMutation {
+
+    UpdateEnterpriseMembersCanChangeRepositoryVisibilitySettingPayload updateEnterpriseMembersCanChangeRepositoryVisibilitySetting(UpdateEnterpriseMembersCanChangeRepositoryVisibilitySettingInput input) throws Exception;
+
+}

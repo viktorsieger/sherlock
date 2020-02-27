@@ -1,5 +1,7 @@
 package se.umu.cs;
 
+import se.umu.cs.graphql.Repository;
+
 import java.io.IOException;
 
 public class Sherlock {
@@ -9,7 +11,6 @@ public class Sherlock {
         String[] parts;
         String owner;
         String name;
-        Repository repository;
 
         checkArguments(args);
 
@@ -44,12 +45,17 @@ public class Sherlock {
         owner = parts[0];
         name = parts[1];
 
+
+        Repository repository = new Repository();
         String temp;
 
         APIManagerTwo apiManagerTwo = new APIManagerTwo();
         temp = apiManagerTwo.fetchRepositoryFoundation(name, owner);
 
-        System.out.println(temp);
+        //System.out.println(temp);
+
+        JSONParser.parser(repository, temp);
+
 
     }
 
@@ -68,3 +74,6 @@ public class Sherlock {
 // https://stackoverflow.com/questions/1688099/converting-json-data-to-java-object
 // https://github.com/chentsulin/awesome-graphql#lib-java
 // https://graphql.org/code/#tools
+
+// https://technology.finra.org/code/serialize-deserialize-interfaces-in-java.html
+// https://stackoverflow.com/a/1688182
