@@ -52,7 +52,14 @@ public class Sherlock {
         repositoryName = parts[1];
 
         //analyzeIssues(repositoryName, repositoryOwner);
-        analyzePullRequests(repositoryName, repositoryOwner);
+        //analyzePullRequests(repositoryName, repositoryOwner);
+
+        String test = new QueryRepository.Builder("atom", "atom")
+                .createdAt(true)
+                .databaseId(false)
+                .deleteBranchOnMerge(true)
+                .build();
+        System.out.println(test);
     }
 
     private static void checkArguments(String[] args) throws IllegalArgumentException {
