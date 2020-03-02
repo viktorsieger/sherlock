@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseMembersCanInviteCollaboratorsSettingMutation {
+
+    UpdateEnterpriseMembersCanInviteCollaboratorsSettingPayload updateEnterpriseMembersCanInviteCollaboratorsSetting(UpdateEnterpriseMembersCanInviteCollaboratorsSettingInput input) throws Exception;
+
+}

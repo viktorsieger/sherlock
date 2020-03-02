@@ -1,0 +1,29 @@
+package se.umu.cs.githubtypes;
+
+public interface ProfileOwner {
+
+    Boolean getAnyPinnableItems();
+
+    String getEmail();
+
+    String getId();
+
+    ProfileItemShowcase getItemShowcase();
+
+    String getLocation();
+
+    String getLogin();
+
+    String getName();
+
+    PinnableItemConnection getPinnableItems();
+
+    PinnableItemConnection getPinnedItems();
+
+    Integer getPinnedItemsRemaining();
+
+    Boolean getViewerCanChangePinnedItems();
+
+    String getWebsiteUrl();
+
+}

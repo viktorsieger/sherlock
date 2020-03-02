@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseOrganizationProjectsSettingMutation {
+
+    UpdateEnterpriseOrganizationProjectsSettingPayload updateEnterpriseOrganizationProjectsSetting(UpdateEnterpriseOrganizationProjectsSettingInput input) throws Exception;
+
+}

@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseMembersCanCreateRepositoriesSettingMutation {
+
+    UpdateEnterpriseMembersCanCreateRepositoriesSettingPayload updateEnterpriseMembersCanCreateRepositoriesSetting(UpdateEnterpriseMembersCanCreateRepositoriesSettingInput input) throws Exception;
+
+}

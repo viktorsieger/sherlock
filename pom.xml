@@ -21,6 +21,7 @@
         </configuration>
       </plugin>
 
+      <!-- Used to generate types from GitHub's GraphQL schema -->
       <!--
       <plugin>
         <groupId>io.github.kobylynskyi</groupId>
@@ -36,7 +37,7 @@
                 <graphqlSchemaPath>${project.basedir}/src/main/resources/schema.public.graphql</graphqlSchemaPath>
               </graphqlSchemaPaths>
               <outputDir>${project.build.directory}/generated-sources/graphql</outputDir>
-              <packageName>se.umu.cs.graphql</packageName>
+              <packageName>se.umu.cs.githubtypes</packageName>
             </configuration>
           </execution>
         </executions>

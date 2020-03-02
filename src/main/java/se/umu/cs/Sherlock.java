@@ -1,16 +1,22 @@
 package se.umu.cs;
 
-import se.umu.cs.graphql.Repository;
+import se.umu.cs.githubtypes.Issue;
+import se.umu.cs.githubtypes.IssueEdge;
+import se.umu.cs.githubtypes.PullRequest;
+import se.umu.cs.githubtypes.Repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Sherlock {
 
     public static void main(String[] args) throws IOException {
 
         String[] parts;
-        String owner;
-        String name;
+        String repositoryOwner;
+        String repositoryName;
 
         checkArguments(args);
 
@@ -42,21 +48,11 @@ public class Sherlock {
         */
 
         parts = args[0].split("/");
-        owner = parts[0];
-        name = parts[1];
+        repositoryOwner = parts[0];
+        repositoryName = parts[1];
 
-
-        Repository repository = new Repository();
-        String temp;
-
-        APIManagerTwo apiManagerTwo = new APIManagerTwo();
-        temp = apiManagerTwo.fetchRepositoryFoundation(name, owner);
-
-        //System.out.println(temp);
-
-        JSONParser.parser(repository, temp);
-
-
+        //analyzeIssues(repositoryName, repositoryOwner);
+        analyzePullRequests(repositoryName, repositoryOwner);
     }
 
     private static void checkArguments(String[] args) throws IllegalArgumentException {
@@ -68,6 +64,61 @@ public class Sherlock {
         }
     }
 
+    private static void analyzeIssues(String repositoryName, String repositoryOwner) throws IOException {
+        List<Issue> issues = getIssues(repositoryName, repositoryOwner);
+    }
+
+    private static List<Issue> getIssues(String repositoryName, String repositoryOwner) throws IOException {
+
+        APIManager apiManager = new APIManager();
+        String jsonRepositoryIssuesMetaData = apiManager.fetchRepositoryIssuesMetaData(repositoryName, repositoryOwner);
+        Repository issuesMetaData = JsonUtils.parseJsonComprisingRepository(jsonRepositoryIssuesMetaData);
+        List<Issue> issues = new ArrayList<>();
+
+        if(issuesMetaData.getHasIssuesEnabled()) {
+
+            String jsonRepositoryIssuesBatch;
+            Repository issuesBatch;
+            Iterator<IssueEdge> iterator;
+            IssueEdge issueEdge;
+            int i = 0;
+            String cursorPrecedingElement = null;
+
+            // Loop through all issues in repository
+            while(i < issuesMetaData.getIssues().getTotalCount()) {
+
+                jsonRepositoryIssuesBatch = apiManager.fetchRepositoryIssuesBatch(repositoryName, repositoryOwner, cursorPrecedingElement);
+                issuesBatch = JsonUtils.parseJsonComprisingRepository(jsonRepositoryIssuesBatch);
+                iterator = issuesBatch.getIssues().getEdges().iterator();
+
+                // Loop through all issues in batch
+                while(iterator.hasNext()) {
+
+                    issueEdge = iterator.next();
+                    issues.add(issueEdge.getNode());
+
+                    if(!iterator.hasNext()) {
+                        cursorPrecedingElement = issueEdge.getCursor();
+                    }
+                }
+
+                i += APIManager.nodeLimitGitHub;
+            }
+        }
+
+        return issues;
+    }
+
+    private static void analyzePullRequests(String repositoryName, String repositoryOwner) {
+        List<PullRequest> pullRequests = getPullRequests(repositoryName, repositoryOwner);
+    }
+
+    private static List<PullRequest> getPullRequests(String repositoryName, String repositoryOwner) {
+
+
+        return null;
+    }
+
 }
 
 // https://stackoverflow.com/questions/51475415/graphql-java-class-generator
@@ -77,3 +128,13 @@ public class Sherlock {
 
 // https://technology.finra.org/code/serialize-deserialize-interfaces-in-java.html
 // https://stackoverflow.com/a/1688182
+
+// https://graphql.github.io/learn/queries/#meta-fields
+
+/*
+TODO: Fetch pull requests.
+TODO: Retrieve GitHub OAuth token dynamically.
+TODO: Implement Stack Overflow's API.
+TODO: Error handling.
+TODO: Check request limit on APIs.
+*/

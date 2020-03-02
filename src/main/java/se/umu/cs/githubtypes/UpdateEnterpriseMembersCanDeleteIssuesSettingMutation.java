@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseMembersCanDeleteIssuesSettingMutation {
+
+    UpdateEnterpriseMembersCanDeleteIssuesSettingPayload updateEnterpriseMembersCanDeleteIssuesSetting(UpdateEnterpriseMembersCanDeleteIssuesSettingInput input) throws Exception;
+
+}

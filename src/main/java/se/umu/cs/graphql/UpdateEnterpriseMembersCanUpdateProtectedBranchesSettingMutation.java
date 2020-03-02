@@ -1,9 +1,0 @@
-package se.umu.cs.graphql;
-
-import java.util.*;
-
-public interface UpdateEnterpriseMembersCanUpdateProtectedBranchesSettingMutation {
-
-    UpdateEnterpriseMembersCanUpdateProtectedBranchesSettingPayload updateEnterpriseMembersCanUpdateProtectedBranchesSetting(UpdateEnterpriseMembersCanUpdateProtectedBranchesSettingInput input) throws Exception;
-
-}

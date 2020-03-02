@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseMembersCanChangeRepositoryVisibilitySettingMutation {
+
+    UpdateEnterpriseMembersCanChangeRepositoryVisibilitySettingPayload updateEnterpriseMembersCanChangeRepositoryVisibilitySetting(UpdateEnterpriseMembersCanChangeRepositoryVisibilitySettingInput input) throws Exception;
+
+}

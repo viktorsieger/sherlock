@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseMembersCanMakePurchasesSettingMutation {
+
+    UpdateEnterpriseMembersCanMakePurchasesSettingPayload updateEnterpriseMembersCanMakePurchasesSetting(UpdateEnterpriseMembersCanMakePurchasesSettingInput input) throws Exception;
+
+}

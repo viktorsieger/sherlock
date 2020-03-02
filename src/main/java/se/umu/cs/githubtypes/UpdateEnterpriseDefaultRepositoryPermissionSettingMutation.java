@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseDefaultRepositoryPermissionSettingMutation {
+
+    UpdateEnterpriseDefaultRepositoryPermissionSettingPayload updateEnterpriseDefaultRepositoryPermissionSetting(UpdateEnterpriseDefaultRepositoryPermissionSettingInput input) throws Exception;
+
+}

@@ -1,9 +1,0 @@
-package se.umu.cs.graphql;
-
-import java.util.*;
-
-public interface UpdateEnterpriseMembersCanViewDependencyInsightsSettingMutation {
-
-    UpdateEnterpriseMembersCanViewDependencyInsightsSettingPayload updateEnterpriseMembersCanViewDependencyInsightsSetting(UpdateEnterpriseMembersCanViewDependencyInsightsSettingInput input) throws Exception;
-
-}

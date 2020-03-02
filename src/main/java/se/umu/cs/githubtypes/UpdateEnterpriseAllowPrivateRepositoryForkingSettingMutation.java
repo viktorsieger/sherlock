@@ -1,0 +1,7 @@
+package se.umu.cs.githubtypes;
+
+public interface UpdateEnterpriseAllowPrivateRepositoryForkingSettingMutation {
+
+    UpdateEnterpriseAllowPrivateRepositoryForkingSettingPayload updateEnterpriseAllowPrivateRepositoryForkingSetting(UpdateEnterpriseAllowPrivateRepositoryForkingSettingInput input) throws Exception;
+
+}
