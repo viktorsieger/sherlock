@@ -116,6 +116,13 @@ public class APIManager {
         return send(request);
     }
 
+    public String fetchRepositoryPullRequestsMetaData(String repositoryName, String repositoryOwner) throws UnsupportedEncodingException {
+        String finalQuery = String.format(queryRepositoryPullRequestsMetaData, repositoryName, repositoryOwner);
+        HttpPost request = createGitHubRequest(finalQuery, authenticationTokenGitHub);
+        //return send(request);
+        return "";
+    }
+
     private String send(HttpUriRequest request) throws IOException {
 
         String json;

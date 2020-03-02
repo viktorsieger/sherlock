@@ -109,12 +109,15 @@ public class Sherlock {
         return issues;
     }
 
-    private static void analyzePullRequests(String repositoryName, String repositoryOwner) {
+    private static void analyzePullRequests(String repositoryName, String repositoryOwner) throws IOException {
         List<PullRequest> pullRequests = getPullRequests(repositoryName, repositoryOwner);
     }
 
-    private static List<PullRequest> getPullRequests(String repositoryName, String repositoryOwner) {
+    private static List<PullRequest> getPullRequests(String repositoryName, String repositoryOwner) throws IOException {
 
+        APIManager apiManager = new APIManager();
+        String jsonRepositoryPullRequestsMetaData = apiManager.fetchRepositoryPullRequestsMetaData(repositoryName, repositoryOwner);
+        Repository pullRequestsMetaData = JsonUtils.parseJsonComprisingRepository(jsonRepositoryPullRequestsMetaData);
 
         return null;
     }
@@ -137,4 +140,5 @@ TODO: Retrieve GitHub OAuth token dynamically.
 TODO: Implement Stack Overflow's API.
 TODO: Error handling.
 TODO: Check request limit on APIs.
+TODO: Implement builder-pattern for query strings. Add smaller builders for complex JSON objects.
 */
