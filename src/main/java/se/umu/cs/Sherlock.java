@@ -7,6 +7,7 @@ import se.umu.cs.githubtypes.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,33 +55,40 @@ public class Sherlock {
         //analyzeIssues(repositoryName, repositoryOwner);
         //analyzePullRequests(repositoryName, repositoryOwner);
 
-        /*
-        String test = new QueryRepository.Builder("atom", "atom")
-                .createdAt(true)
-                .databaseId(false)
-                .deleteBranchOnMerge(true)
-                .build();
 
-        System.out.println(test);
-        */
 
-        /*
-        QueryRepository queryRepository = new QueryRepository.Builder("atom", "atom")
+        HashMap<String, String> argumentsIssues = new HashMap<>();
+        argumentsIssues.put("first", "100");
+
+        String queryIssues = new QueryIssues.Builder(argumentsIssues)
                 .createdAt()
-                .databaseId()
-                .build();
+                .title()
+                .build()
+                .getQueryIssues();
 
-        String test = queryRepository.getQuery();
+        String queryLicenseInfo = new QueryLicense.Builder()
+                .key()
+                .name()
+                .build()
+                .getQueryLicense();
 
-        System.out.println(test);
-        */
+        HashMap<String, String> argumentsRepository = new HashMap<>();
+        argumentsRepository.put("name", "\"keepassxc\"");
+        argumentsRepository.put("owner", "\"keepassxreboot\"");
 
-        String test = new QueryIssues.Builder(100, "abc", "def")
-                .closedAt()
+        String queryRepository = new QueryRepository.Builder(argumentsRepository)
+                .createAt()
+                .hasIssuesEnabled()
+                .licenseInfo(queryLicenseInfo)
+                .build()
+                .getQueryRepository();
+
+        String query = new Query.Builder()
+                .repository(queryRepository)
                 .build()
                 .getQuery();
 
-        System.out.println(test);
+        System.out.println(query);
 
     }
 
@@ -169,6 +177,4 @@ TODO: Retrieve GitHub OAuth token dynamically.
 TODO: Implement Stack Overflow's API.
 TODO: Error handling.
 TODO: Check request limit on APIs.
-TODO: Implement builder-pattern for query strings. Add smaller builders for complex JSON objects.
-TODO: Add methods for the builder classes that adds curly braces etc.
 */

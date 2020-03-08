@@ -4,71 +4,92 @@ import java.util.HashMap;
 
 public class QueryIssues {
 
-    private final String query;
+    private final String queryIssues;
 
     public static class Builder {
 
-        // Required parameters
-        private final int first;
-        private final String after;
-        private final String orderBy;
+        private QueryBuilder queryBuilder;
+        private String queryIssues;
 
-        // Optional parameters
-        private boolean closedAt = false;
-        private boolean createdAt = false;
-        private boolean state = false;
+        public Builder(HashMap<String, String> arguments) {
+            queryBuilder = QueryBuilder.getInstance("issues", arguments)
+                    .appendSelectionSet("edges")
+                    .appendField("cursor")
+                    .appendSelectionSet("node");
+        }
 
-        private String query;
-
-        public Builder(int first, String after, String orderBy) {
-            this.first = first;
-            this.after = after;
-            this.orderBy = orderBy;
+        public Builder bodyText() {
+            queryBuilder.appendField("bodyText");
+            return this;
         }
 
         public Builder closedAt() {
-            closedAt = true;
+            queryBuilder.appendField("closedAt");
+            return this;
+        }
+
+        public Builder createdAt() {
+            queryBuilder.appendField("createdAt");
+            return this;
+        }
+
+        public Builder id() {
+            queryBuilder.appendField("id");
+            return this;
+        }
+
+        public Builder state() {
+            queryBuilder.appendField("state");
+            return this;
+        }
+
+        public Builder title() {
+            queryBuilder.appendField("title");
+            return this;
+        }
+
+        public Builder updatedAt() {
+            queryBuilder.appendField("updatedAt");
             return this;
         }
 
         public QueryIssues build() {
-
-            QueryStringBuilder queryStringBuilder = QueryStringBuilder.getInstance();
-
-            HashMap<String, String> arguments = new HashMap<>();
-            arguments.put("keyA", "valueA");
-            arguments.put("keyB", "valueB");
-            arguments.put("keyC", "\"valueC\"");
-
-            queryStringBuilder.appendArguments(arguments);
-
-            /*
-            queryStringBuilder.append("issues")
-                    .appendParenthesisLeft()
-                    .appendKeyValuePair("key1", "value1")
-                    .appendArgumentsSeparator()
-                    .appendKeyValuePair("key2", "\"value2\"")
-                    .appendArgumentsSeparator()
-                    .appendKeyValuePair("key3", "value3")
-                    .appendParenthesisRight()
-                    .appendSpaceAndBraceLeft();
-            */
-
-            query = queryStringBuilder.toString();
-
+            queryBuilder.appendClosingBraces();
+            queryIssues = queryBuilder.toString();
             return new QueryIssues(this);
         }
+    }
 
-        private void addOptionalParameters() {
+    public static class BuilderMetaData {
 
+        private QueryBuilder queryBuilder;
+        private String queryIssuesMetaData;
+
+        public BuilderMetaData() {
+            queryBuilder = QueryBuilder.getInstance("issues");
+        }
+
+        public BuilderMetaData totalCount() {
+            queryBuilder.appendField("totalCount");
+            return this;
+        }
+
+        public QueryIssues build() {
+            queryBuilder.appendClosingBraces();
+            queryIssuesMetaData = queryBuilder.toString();
+            return new QueryIssues(this);
         }
     }
 
     private QueryIssues(Builder builder) {
-        this.query = builder.query;
+        this.queryIssues = builder.queryIssues;
     }
 
-    String getQuery() {
-        return query;
+    private QueryIssues(BuilderMetaData builderMetaData) {
+        this.queryIssues = builderMetaData.queryIssuesMetaData;
+    }
+
+    String getQueryIssues() {
+        return queryIssues;
     }
 }
