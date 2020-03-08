@@ -2,6 +2,8 @@ package se.umu.cs;
 
 public class QueryRepository {
 
+    private final String query;
+
     public static class Builder {
 
         // Required parameters
@@ -13,29 +15,34 @@ public class QueryRepository {
         private boolean databaseId = false;
         private boolean deleteBranchOnMerge = false;
 
+        private String query;
+
         public Builder(String name, String owner) {
             this.name = name;
             this.owner = owner;
         }
 
-        public Builder createdAt(boolean isAdded) {
-            createdAt = isAdded;
+        public Builder createdAt() {
+            createdAt = true;
             return this;
         }
 
-        public Builder databaseId(boolean isAdded) {
-            databaseId = isAdded;
+        public Builder databaseId() {
+            databaseId = true;
             return this;
         }
 
-        public Builder deleteBranchOnMerge(boolean isAdded) {
-            deleteBranchOnMerge = isAdded;
+        public Builder deleteBranchOnMerge() {
+            deleteBranchOnMerge = true;
             return this;
         }
 
-        public String build() {
+        public QueryRepository build() {
+            addOptionalParameters();
+            return new QueryRepository(this);
+        }
 
-            boolean isLeafAdded = false;
+        private void addOptionalParameters() {
 
             StringBuilder stringBuilder = new StringBuilder("query { repository(name: \"");
 
@@ -43,27 +50,27 @@ public class QueryRepository {
 
             if(createdAt) {
                 stringBuilder.append("createdAt ");
-                isLeafAdded = true;
             }
 
             if(databaseId) {
                 stringBuilder.append("databaseId ");
-                isLeafAdded = true;
             }
 
             if(deleteBranchOnMerge) {
                 stringBuilder.append("deleteBranchOnMerge ");
-                isLeafAdded = true;
-            }
-
-            // Add 'id' if no other leaf is added to query
-            if(!isLeafAdded) {
-                stringBuilder.append("id ");
             }
 
             stringBuilder.append("} }");
 
-            return stringBuilder.toString();
+            query = stringBuilder.toString();
         }
+    }
+
+    private QueryRepository(Builder builder) {
+        this.query = builder.query;
+    }
+
+    String getQuery() {
+        return query;
     }
 }

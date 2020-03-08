@@ -54,12 +54,34 @@ public class Sherlock {
         //analyzeIssues(repositoryName, repositoryOwner);
         //analyzePullRequests(repositoryName, repositoryOwner);
 
+        /*
         String test = new QueryRepository.Builder("atom", "atom")
                 .createdAt(true)
                 .databaseId(false)
                 .deleteBranchOnMerge(true)
                 .build();
+
         System.out.println(test);
+        */
+
+        /*
+        QueryRepository queryRepository = new QueryRepository.Builder("atom", "atom")
+                .createdAt()
+                .databaseId()
+                .build();
+
+        String test = queryRepository.getQuery();
+
+        System.out.println(test);
+        */
+
+        String test = new QueryIssues.Builder(100, "abc", "def")
+                .closedAt()
+                .build()
+                .getQuery();
+
+        System.out.println(test);
+
     }
 
     private static void checkArguments(String[] args) throws IllegalArgumentException {
@@ -148,4 +170,5 @@ TODO: Implement Stack Overflow's API.
 TODO: Error handling.
 TODO: Check request limit on APIs.
 TODO: Implement builder-pattern for query strings. Add smaller builders for complex JSON objects.
+TODO: Add methods for the builder classes that adds curly braces etc.
 */
